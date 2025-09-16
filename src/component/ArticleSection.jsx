@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from './ui/select';
 import BlogCard from './BlogCard';
+import SearchDropdown from './SearchDropdown';
 import { formatDate } from '../lib/utils';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +19,7 @@ export default function ArticleSection() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   
   // Array ของ Category ต่างๆ
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
@@ -89,6 +91,18 @@ export default function ArticleSection() {
   // ฟังก์ชันสำหรับค้นหา
   const handleSearch = (value) => {
     setSearchTerm(value);
+    setShowSearchDropdown(value.trim().length > 0);
+  };
+
+  const handleSearchFocus = () => {
+    if (searchTerm.trim().length > 0) {
+      setShowSearchDropdown(true);
+    }
+  };
+
+  const handleSearchBlur = () => {
+    // Delay เพื่อให้เวลาคลิกที่ผลลัพธ์
+    setTimeout(() => setShowSearchDropdown(false), 200);
   };
 
   return (
@@ -120,16 +134,23 @@ export default function ArticleSection() {
               ))}
             </div>
 
-            {/* Search Input */}
+            {/* Search Input with Dropdown */}
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
+                onFocus={handleSearchFocus}
+                onBlur={handleSearchBlur}
                 className="px-4 py-2 pr-8 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 w-64"
               />
               <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <SearchDropdown 
+                searchTerm={searchTerm}
+                isOpen={showSearchDropdown}
+                onClose={() => setShowSearchDropdown(false)}
+              />
             </div>
           </div>
         </div>
@@ -144,9 +165,16 @@ export default function ArticleSection() {
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
+                onFocus={handleSearchFocus}
+                onBlur={handleSearchBlur}
                 className="w-full px-4 py-3 pr-10 bg-white border border-gray-200 rounded-lg text-gray-600 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent"
               />
               <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <SearchDropdown 
+                searchTerm={searchTerm}
+                isOpen={showSearchDropdown}
+                onClose={() => setShowSearchDropdown(false)}
+              />
             </div>
 
             {/* Category Select */}

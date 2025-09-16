@@ -1,5 +1,6 @@
 ﻿import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import NavBar from "./component/NavBar";
 import HeroSection from "./component/HeroSection";
 import Footer from './component/Footer';
@@ -29,6 +30,15 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
+        <Toaster 
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: '#10b981', 
+              color: 'white',
+            },
+          }}
+        />
       </div>
     </Router>
   );
