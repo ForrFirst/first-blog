@@ -1,7 +1,8 @@
-import './App.css';
+﻿import './App.css';
 import NavBar from "./component/NavBar";
 import HeroSection from "./component/HeroSection";
 import Footer from './component/Footer';
+import ArticleSection from './component/ArticleSection';
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       <NavBar />
       <main className="flex-grow">
         <HeroSection />
+        <ArticleSection />
       </main>
       <Footer />
     </div>
