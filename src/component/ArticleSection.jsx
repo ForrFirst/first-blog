@@ -10,6 +10,7 @@ import {
 } from './ui/select';
 import BlogCard from './BlogCard';
 import { formatDate } from '../lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 export default function ArticleSection() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -195,6 +196,7 @@ export default function ArticleSection() {
               {posts.map((post) => (
                 <BlogCard
                   key={post.id}
+                  id={post.id}
                   image={post.image}
                   category={post.category}
                   title={post.title}
