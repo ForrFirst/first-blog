@@ -7,6 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import BlogCard from './BlogCard';
+import { blogPosts } from '../data/blogPosts';
 
 export default function ArticleSection() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -79,6 +81,23 @@ export default function ArticleSection() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        </div>
+
+        {/* Blog Posts Grid */}
+        <div className="mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {blogPosts.map((post) => (
+              <BlogCard
+                key={post.id}
+                image={post.image}
+                category={post.category}
+                title={post.title}
+                description={post.description}
+                author={post.author}
+                date={post.date}
+              />
+            ))}
           </div>
         </div>
       </div>
