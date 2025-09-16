@@ -1,47 +1,22 @@
 const express = require('express');
-const cors = require('cors');
-const { validatePostData } = require('./postvalidation');
+const router = express.Router();
+const { validatePostData } = require('../postvalidation');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Routes
-app.get('/profiles', (req, res) => {
-  const profileData = {
-    data: {
-      name: "john",
-      age: 20
-    }
-  };
-  
-  res.status(200).json(profileData);
-});
-
-// POST /assignments endpoint
-app.post('/assignments', (req, res) => {
+router.post('/assignments', (req, res) => {
   try {
-    const { title, image, category_id, description, content, status_id } = req.body;
-    
-    // Validate required fields and data types
     const validationErrors = validatePostData(req.body);
     if (validationErrors.length > 0) {
       return res.status(400).json({
-        message: validationErrors[0] // Return first error message
+        message: validationErrors[0]
       });
     }
     
-    // Simulate database connection error (random 10% chance)
     if (Math.random() < 0.1) {
       return res.status(500).json({
         message: "Server could not create post because database connection"
       });
     }
     
-    // Success response
     res.status(201).json({
       message: "Created post sucessfully"
     });
@@ -53,8 +28,7 @@ app.post('/assignments', (req, res) => {
   }
 });
 
-// GET /posts endpoint with pagination and filtering
-app.get('/posts', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 6, category, keyword } = req.query;
     
@@ -64,13 +38,12 @@ app.get('/posts', async (req, res) => {
       });
     }
     
-  
     const response = {
       totalPosts: 30,
       totalPages: 5,
       currentPage: parseInt(page),
       limit: parseInt(limit),
-      posts: [], 
+      posts: [],
       nextPage: parseInt(page) < 5 ? parseInt(page) + 1 : null
     };
     
@@ -83,7 +56,7 @@ app.get('/posts', async (req, res) => {
   }
 });
 
-app.get('/posts/:postId', async (req, res) => {
+router.get('/:postId', async (req, res) => {
   try {
     const { postId } = req.params;
     
@@ -120,16 +93,14 @@ app.get('/posts/:postId', async (req, res) => {
   }
 });
 
-
-app.put('/posts/:postId', (req, res) => {
+router.put('/:postId', (req, res) => {
   try {
     const { postId } = req.params;
-    const { title, image, category_id, description, content, status_id } = req.body;
     
     const validationErrors = validatePostData(req.body);
     if (validationErrors.length > 0) {
       return res.status(400).json({
-        message: validationErrors[0] 
+        message: validationErrors[0]
       });
     }
     
@@ -145,7 +116,6 @@ app.put('/posts/:postId', (req, res) => {
       });
     }
     
-
     res.status(200).json({
       message: "Updated post sucessfully"
     });
@@ -157,7 +127,7 @@ app.put('/posts/:postId', (req, res) => {
   }
 });
 
-app.delete('/posts/:postId', (req, res) => {
+router.delete('/:postId', (req, res) => {
   try {
     const { postId } = req.params;
     
@@ -184,12 +154,4 @@ app.delete('/posts/:postId', (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Server is running!' });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-module.exports = app;
+module.exports = router; 
