@@ -13,6 +13,9 @@ import { blogPosts } from '../data/blogPosts';
 export default function ArticleSection() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('highlight');
+  
+  // Array ของ Category ต่างๆ
+  const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
   return (
     <section className="py-12 px-4">
@@ -27,12 +30,18 @@ export default function ArticleSection() {
           <div className="bg-gray-100 rounded-xl p-4 flex items-center justify-between gap-8">
             {/* Filter Options */}
             <div className="flex space-x-4 text-gray-600">
-              <button className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md font-medium">
-                Highlight
-              </button>
-              <button className="hover:text-gray-800 transition-colors">Cat</button>
-              <button className="hover:text-gray-800 transition-colors">Inspiration</button>
-              <button className="hover:text-gray-800 transition-colors">General</button>
+              {categories.map((category, index) => (
+                <button 
+                  key={category}
+                  className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                    index === 0 
+                      ? 'bg-gray-300 text-gray-800' 
+                      : 'hover:text-gray-800'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
             </div>
 
             {/* Search Input */}
@@ -74,10 +83,11 @@ export default function ArticleSection() {
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="highlight">Highlight</SelectItem>
-                  <SelectItem value="cat">Cat</SelectItem>
-                  <SelectItem value="inspiration">Inspiration</SelectItem>
-                  <SelectItem value="general">General</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category.toLowerCase()}>
+                      {category}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
