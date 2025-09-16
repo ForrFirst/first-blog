@@ -12,7 +12,7 @@ import { blogPosts } from '../data/blogPosts';
 
 export default function ArticleSection() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('highlight');
+  const [category, setCategory] = useState("Highlight");
   
   // Array ของ Category ต่างๆ
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
@@ -30,16 +30,18 @@ export default function ArticleSection() {
           <div className="bg-gray-100 rounded-xl p-4 flex items-center justify-between gap-8">
             {/* Filter Options */}
             <div className="flex space-x-4 text-gray-600">
-              {categories.map((category, index) => (
-                <button 
-                  key={category}
-                  className={`px-4 py-2 rounded-md font-medium transition-colors ${
-                    index === 0 
-                      ? 'bg-gray-300 text-gray-800' 
-                      : 'hover:text-gray-800'
-                  }`}
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  className={`${
+                    category === cat
+                      ? "bg-blue-500 text-white" // สีปุ่มเมื่อถูกเลือก
+                      : "bg-gray-200 hover:bg-gray-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
+                  } px-4 py-2 rounded font-medium transition-colors`}
+                  disabled={category === cat} // ปิดการคลิกปุ่มที่ถูกเลือก
+                  onClick={() => setCategory(cat)} // เปลี่ยน State เมื่อคลิก
                 >
-                  {category}
+                  {cat}
                 </button>
               ))}
             </div>
@@ -78,16 +80,15 @@ export default function ArticleSection() {
               <label className="text-sm font-medium text-gray-600">
                 Category
               </label>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent">
-                  <SelectValue placeholder="Select category" />
+              <Select onValueChange={(value) => setCategory(value)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category.toLowerCase()}>
-                      {category}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="Highlight">Highlight</SelectItem>
+                  <SelectItem value="Cat">Cat</SelectItem>
+                  <SelectItem value="Inspiration">Inspiration</SelectItem>
+                  <SelectItem value="General">General</SelectItem>
                 </SelectContent>
               </Select>
             </div>
