@@ -20,6 +20,37 @@ app.get('/profiles', (req, res) => {
   res.status(200).json(profileData);
 });
 
+// POST /assignments endpoint
+app.post('/assignments', (req, res) => {
+  try {
+    const { title, image, category_id, description, content, status_id } = req.body;
+    
+    // Validate required fields
+    if (!title || !image || !category_id || !description || !content || !status_id) {
+      return res.status(400).json({
+        message: "Server could not create post because there are missing data from client"
+      });
+    }
+    
+    // Simulate database connection error (random 10% chance)
+    if (Math.random() < 0.1) {
+      return res.status(500).json({
+        message: "Server could not create post because database connection"
+      });
+    }
+    
+    // Success response
+    res.status(201).json({
+      message: "Created post sucessfully"
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      message: "Server could not create post because database connection"
+    });
+  }
+});
+
 // Health check endpoint
 app.get('/', (req, res) => {
   res.json({ message: 'Server is running!' });
