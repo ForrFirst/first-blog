@@ -5,7 +5,6 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
 
-// ฟังก์ชันแปลงวันที่จาก ISO 8601 เป็นรูปแบบ "11 September 2024"
 export function formatDate(isoDate) {
   const date = new Date(isoDate);
   const months = [

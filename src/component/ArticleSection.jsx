@@ -11,7 +11,6 @@ import {
 import BlogCard from './BlogCard';
 import SearchDropdown from './SearchDropdown';
 import { formatDate } from '../lib/utils';
-import { useNavigate } from 'react-router-dom';
 
 export default function ArticleSection() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,55 +20,54 @@ export default function ArticleSection() {
   const [error, setError] = useState(null);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   
-  // Array ของ Category ต่างๆ
+
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
-  // ดึงข้อมูลจาก API ตาม Category
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
         
-        // สร้าง URL สำหรับ API request
+      
         let apiUrl = 'https://blog-post-project-api.vercel.app/posts';
         
-        // เพิ่ม parameter category ถ้าไม่ใช่ Highlight
+  
         if (category !== "Highlight") {
           apiUrl += `?category=${encodeURIComponent(category)}`;
         }
         
-        // เพิ่ม parameter keyword ถ้ามีการค้นหา
+     
         if (searchTerm.trim()) {
           const separator = category !== "Highlight" ? '&' : '?';
           apiUrl += `${separator}keyword=${encodeURIComponent(searchTerm.trim())}`;
         }
         
-        console.log('Fetching from:', apiUrl); // Debug log
+        console.log('Fetching from:', apiUrl); 
         
         const response = await axios.get(apiUrl);
-        console.log('API Response:', response.data); // Debug log
+        console.log('API Response:', response.data); 
         
-        // ตรวจสอบโครงสร้างข้อมูลและแปลงรูปแบบวันที่
+ 
         let postsData = [];
         
         if (response.data.posts && Array.isArray(response.data.posts)) {
-          // กรณี API ส่งข้อมูลในรูปแบบ {posts: [...], totalPosts: 30, ...}
+     
           postsData = response.data.posts;
         } else if (Array.isArray(response.data)) {
-          // กรณี API ส่งข้อมูลเป็น array โดยตรง
+      
           postsData = response.data;
         } else {
           throw new Error('Invalid data structure from API');
         }
         
-        // แปลงรูปแบบวันที่
+   
         const formattedPosts = postsData.map(post => ({
           ...post,
           date: formatDate(post.date)
         }));
         
-        console.log('Formatted posts:', formattedPosts); // Debug log
-        
+        console.log('Formatted posts:', formattedPosts); 
         setPosts(formattedPosts);
         setError(null);
       } catch (err) {
@@ -83,12 +81,12 @@ export default function ArticleSection() {
     fetchPosts();
   }, [category, searchTerm]);
 
-  // ฟังก์ชันสำหรับเปลี่ยน Category
+
   const handleCategoryChange = (newCategory) => {
     setCategory(newCategory);
   };
 
-  // ฟังก์ชันสำหรับค้นหา
+
   const handleSearch = (value) => {
     setSearchTerm(value);
     setShowSearchDropdown(value.trim().length > 0);
@@ -101,21 +99,21 @@ export default function ArticleSection() {
   };
 
   const handleSearchBlur = () => {
-    // Delay เพื่อให้เวลาคลิกที่ผลลัพธ์
+  
     setTimeout(() => setShowSearchDropdown(false), 200);
   };
 
   return (
     <section className="py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-screen-xl mx-auto">
         {/* Header */}
-        <h2 className="text-3xl font-bold text-gray-900 text-left mb-8">
+        <h2 className="text-3xl font-bold text-[#26231E] text-left mb-8">
           Latest articles
         </h2>
 
         {/* Desktop Layout */}
-        <div className="hidden md:block">
-          <div className="bg-gray-100 rounded-xl p-4 flex items-center justify-between gap-8">
+        <div className="hidden md:block ">
+          <div className="bg-[#EFEEEB] rounded-xl p-4 flex items-center justify-between gap-8" >
             {/* Filter Options */}
             <div className="flex space-x-4 text-gray-600">
               {categories.map((cat) => (
@@ -123,11 +121,11 @@ export default function ArticleSection() {
                   key={cat}
                   className={`${
                     category === cat
-                      ? "bg-blue-500 text-white" // สีปุ่มเมื่อถูกเลือก
-                      : "bg-gray-200 hover:bg-gray-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
-                  } px-4 py-2 rounded font-medium transition-colors`}
-                  disabled={category === cat} // ปิดการคลิกปุ่มที่ถูกเลือก
-                  onClick={() => handleCategoryChange(cat)} // เปลี่ยน Category และส่ง Request
+                      ? "bg-[#DAD6D1] text-[#43403B]" 
+                      : "hover:bg-gray-300" 
+                  } px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer`}
+                  disabled={category === cat} 
+                  onClick={() => handleCategoryChange(cat)} 
                 >
                   {cat}
                 </button>
@@ -143,13 +141,14 @@ export default function ArticleSection() {
                 onChange={(e) => handleSearch(e.target.value)}
                 onFocus={handleSearchFocus}
                 onBlur={handleSearchBlur}
-                className="px-4 py-2 pr-8 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 w-64"
+                className="px-4 py-2 pr-8 bg-[#FFFFFF] border border-[#DAD6D1] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 w-64"
               />
-              <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#75716B]" />
               <SearchDropdown 
                 searchTerm={searchTerm}
                 isOpen={showSearchDropdown}
                 onClose={() => setShowSearchDropdown(false)}
+                className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-50"
               />
             </div>
           </div>
@@ -233,6 +232,14 @@ export default function ArticleSection() {
                   date={post.date}
                 />
               ))}
+            </div>
+            {/* View More Button */}
+            <div className="text-center mt-20 mb-15">
+              <button 
+                className="text-[#26231E] font-semibold underline hover:text-gray-600 cursor-pointer"
+              >
+                View More
+              </button>
             </div>
           </div>
         )}

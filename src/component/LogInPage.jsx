@@ -17,22 +17,22 @@ export default function LogInPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Handle login logic
+ 
     console.log('Login data:', formData);
-    // After successful login, redirect to home page
+   
     navigate('/');
   };
 
   return (
     <div className="min-h-screen bg-[#F9F8F6] flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-sm p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">
+      <div className="bg-[#EFEEEB] rounded-lg p-10 w-3xl h-2xl">
+        <h1 className="text-4xl font-semibold text-[#26231E] text-center mb-8">
           Log in
         </h1>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="px-15 block text-sm font-medium text-[#75716B] mb-1">
               Email
             </label>
             <input
@@ -42,13 +42,13 @@ export default function LogInPage() {
               value={formData.email}
               onChange={handleChange}
               placeholder="Email"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="bg-white w-xl px-3 py-2 border border-[#DAD6D1] rounded-lg flex justify-center mx-auto"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="password" className="px-15 block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
             <input
@@ -58,24 +58,24 @@ export default function LogInPage() {
               value={formData.password}
               onChange={handleChange}
               placeholder="Password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="bg-white w-xl px-3 py-2 border border-[#DAD6D1] rounded-lg flex justify-center mx-auto"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors"
+            className="flex justify-center py-3 px-10 items-center bg-[#26231E] text-white rounded-full hover:bg-[#75716B] cursor-pointer mx-auto mt-10"
           >
             Log in
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-600 mt-4">
+        <p className="text-center text-sm text-gray-600 mt-10">
           Don't have an account?{' '}
           <button
             onClick={() => navigate('/signup')}
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-base font-medium text-[#26231E] hover:text-gray-500 underline cursor-pointer"
           >
             Sign up
           </button>

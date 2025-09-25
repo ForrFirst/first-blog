@@ -22,8 +22,8 @@ function HomePage() {
 export default function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
-        <NavBar />
+      <div className="flex flex-col min-h-screen max-width-full ">  
+        <NavBar />  
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
