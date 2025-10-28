@@ -55,4 +55,3 @@ const protectAdmin = async (req, res, next) => {
 };
 
 export default protectAdmin;
-

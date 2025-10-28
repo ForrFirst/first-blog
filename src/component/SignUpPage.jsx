@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/authentication.jsx';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
+  const { register, state } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -67,13 +69,15 @@ export default function SignUpPage() {
     return Object.values(newErrors).every(error => error === '');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
-      console.log('Sign up data:', formData);
-      // Redirect to registration success page
-      navigate('/registration-success');
+      const result = await register(formData);
+      if (result?.error) {
+        // Handle registration error if needed
+        console.error('Registration error:', result.error);
+      }
     }
   };
 
@@ -167,9 +171,10 @@ export default function SignUpPage() {
 
           <button
             type="submit"
-            className="flex justify-center py-3 px-10 items-center bg-[#26231E] text-white rounded-full hover:bg-[#75716B] cursor-pointer mx-auto mt-10"
+            disabled={state.loading}
+            className="flex justify-center py-3 px-10 items-center bg-[#26231E] text-white rounded-full hover:bg-[#75716B] cursor-pointer mx-auto mt-10 disabled:opacity-50"
           >
-            Sign up
+            {state.loading ? 'Signing up...' : 'Sign up'}
           </button>
         </form>
 

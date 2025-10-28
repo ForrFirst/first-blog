@@ -32,4 +32,3 @@ const protectUser = async (req, res, next) => {
 };
 
 export default protectUser;
-

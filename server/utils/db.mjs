@@ -14,4 +14,3 @@ const connectionPool = new Pool({
 });
 
 export default connectionPool;
-

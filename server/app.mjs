@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const profilesRouter = require('./routes/profiles');
 const postsRouter = require('./routes/posts');
-const protectUser = require('./routes/middlewares/protectUser.mjs');
-const protectAdmin = require('./routes/middlewares/protectAdmin.mjs');
+const protectUser = require('./middleware/protectUser.mjs');
+const protectAdmin = require('./middleware/protectAdmin.mjs');
 
 const app = express();
 const PORT = process.env.PORT || 4001;
