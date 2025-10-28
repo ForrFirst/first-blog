@@ -1,10 +1,10 @@
 export default function HeroSection() {
     return (
-      <section className="pt-28 flex flex-col md:flex-row items-center justify-center px-8 py-16 gap-8 max-w-7xl mx-auto">
+      <section className="pt-28 flex flex-col md:flex-row items-center justify-center px-4 sm:px-8 py-16 gap-8 max-w-7xl mx-auto">
        
         <div className="flex-1 flex justify-end text-center md:text-right">
           <div>
-            <h1 className="text-5xl font-bold mb-6 leading-snug">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-snug">
               Stay <br />Informed, <br /> Stay Inspired
             </h1>
             <p className="text-[#75716B] text-base leading-relaxed max-w-md font-medium">
@@ -18,7 +18,7 @@ export default function HeroSection() {
           <img
             src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
             alt="Author with cat"
-            className="rounded-2xl object-cover w-74 h-96 mt-8"
+            className="rounded-2xl object-cover w-full sm:w-74 h-64 sm:h-96 mt-8"
           />
         </div>
   

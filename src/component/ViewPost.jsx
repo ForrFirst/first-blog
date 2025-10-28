@@ -50,9 +50,15 @@ export default function ViewPost() {
     window.scrollTo(0, 0);
   }, [postId]);
 
-  // คำนวณตำแหน่ง Author Box และติดตามการเลื่อนจอ
+  // คำนวณตำแหน่ง Author Box และติดตามการเลื่อนจอ (เฉพาะ desktop)
   useEffect(() => {
     const updateAuthorBoxPosition = () => {
+      // ตรวจสอบว่าเป็น desktop หรือไม่ (lg breakpoint ขึ้นไป)
+      if (window.innerWidth < 1024) {
+        setAuthorBoxStyle({});
+        return;
+      }
+
       const authorBoxElement = document.querySelector('[data-author-box]');
       if (authorBoxElement) {
         const rect = authorBoxElement.getBoundingClientRect();
@@ -72,21 +78,23 @@ export default function ViewPost() {
       }
     };
 
-
     const timer = setTimeout(updateAuthorBoxPosition, 100);
-
 
     const handleScroll = () => {
       updateAuthorBoxPosition();
     };
 
+    const handleResize = () => {
+      updateAuthorBoxPosition();
+    };
+
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', updateAuthorBoxPosition);
+    window.addEventListener('resize', handleResize);
 
     return () => {
       clearTimeout(timer);
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', updateAuthorBoxPosition);
+      window.removeEventListener('resize', handleResize);
     };
   }, [post]);
 
@@ -166,9 +174,9 @@ export default function ViewPost() {
 
   return (
     <div className="min-h-screen bg-[#F9F8F6]">
-      <div className="max-w-7xl mx-auto py-30">
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:py-30 sm:px-0">
         <article className="bg-[#F9F8F6] rounded-lg overflow-hidden">
-          <div className="relative h-64 md:h-150">
+          <div className="relative h-48 sm:h-64 md:h-150">
             <img 
               src={post.image} 
               alt={post.title}
@@ -176,7 +184,7 @@ export default function ViewPost() {
             />
           </div>
 
-          <div className="flex gap-8 p-6 md:p-8">
+          <div className="flex flex-col lg:flex-row sm:gap-8 p-4 sm:p-6 md:p-8">
             {/* Main Content - Left Side */}
             <div className="flex-1">
               <div className="mb-4">
@@ -186,25 +194,51 @@ export default function ViewPost() {
                 <span className="text-[#75716B] font-medium ml-4">{post.date}</span>
               </div>
 
-              <h1 className="text-4xl font-semibold text-[#26231E] mb-8">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#26231E] mb-6 sm:mb-8">
                 {post.title}
               </h1>
 
-              <p className="text-[#43403B] text-base font-medium mb-6">
+              <p className="text-[#43403B] text-sm sm:text-base font-medium mb-4 sm:mb-6">
                 {post.description}
               </p>
 
-              <div className="markdown mb-15 text-[#43403B] text-base font-medium">
+              <div className="markdown mb-8 sm:mb-15 text-[#43403B] text-sm sm:text-base font-medium">
                 <ReactMarkdown>{post.content}</ReactMarkdown>
               </div>
 
+              {/* Author Box - Mobile: Below content */}
+              <div className="lg:hidden mb-6">
+                <div className="bg-[#EFEEEB] rounded-xl p-6">
+                  <div className="flex items-center mb-4">
+                    <img 
+                      src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
+                      alt={post.author}
+                      className="w-12 h-12 rounded-full mr-4"
+                    />
+                    <div>
+                      <div className="text-sm text-gray-500">Author</div>
+                      <div className="font-semibold text-gray-900">{post.author}</div>
+                    </div>             
+                  </div>
+                  <div className="border border-[#DAD6D1] mb-4"></div>
+                  <div className="text-[#75716B] text-base font-medium leading-relaxed">
+                    <p className="mb-3">
+                      I am a pet enthusiast and freelance writer who specializes in animal behavior and care. With a deep love for cats, I enjoy sharing insights on feline companionship and wellness.
+                    </p>
+                    <p>
+                      When I'm not writing, I spend time volunteering at my local animal shelter, helping cats find loving homes.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Interaction Bar */}
-              <div className="bg-[#EFEEEB] rounded-2xl p-4 ">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
+              <div className="bg-[#EFEEEB] rounded-2xl p-3 sm:p-4">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center space-x-2 sm:space-x-4">
                       <button
                         onClick={handleLike}
-                        className={`flex items-center space-x-2 px-8 py-2 font-medium rounded-full border transition-colors cursor-pointer ${
+                        className={`flex items-center space-x-2 px-4 sm:px-8 py-2 font-medium rounded-full border transition-colors cursor-pointer ${
                           isLiked 
                             ? 'bg-red-50 border-red-200 text-red-600' 
                             : 'bg-white border-[#75716B] text-gray-700 hover:bg-gray-50'
@@ -215,33 +249,34 @@ export default function ViewPost() {
                       </button>
                     </div>
 
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2 sm:space-x-4">
                       <button
                         onClick={handleCopy}
-                        className="flex items-center font-medium space-x-2 px-8 py-2 bg-white border border-[#75716B] rounded-full text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                        className="flex items-center font-medium space-x-2 px-4 sm:px-8 py-2 bg-white border border-[#75716B] rounded-full text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
                       >
                         <Copy size={16} />
-                        <span>Copy link</span>
+                        <span className="hidden sm:inline">Copy link</span>
+                        <span className="sm:hidden">Copy</span>
                       </button>
                       
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
                         <button 
                           onClick={() => handleShare('facebook')}
-                          className="w-12 h-12  rounded-full flex items-center justify-center transition-colors hover:bg-[#9ac1e9] cursor-pointer"
+                          className="w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors hover:bg-[#9ac1e9] cursor-pointer"
                         >
-                          <img src="/src/assets/image/Facebook.png" alt="Facebook" className="w-12 h-12" />
+                          <img src="/src/assets/image/Facebook.png" alt="Facebook" className="w-8 h-8 sm:w-12 sm:h-12" />
                         </button>
                         <button 
                           onClick={() => handleShare('linkedin')}
-                          className="w-12 h-12  rounded-full flex items-center justify-center transition-colors hover:bg-[#9ac1e9] cursor-pointer"
+                          className="w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors hover:bg-[#9ac1e9] cursor-pointer"
                         >
-                          <img src="/src/assets/image/Linkedin.png" alt="LinkedIn" className="w-12 h-12" />
+                          <img src="/src/assets/image/Linkedin.png" alt="LinkedIn" className="w-8 h-8 sm:w-12 sm:h-12" />
                         </button>
                         <button 
                           onClick={() => handleShare('twitter')}
-                          className="w-12 h-12  rounded-full flex items-center justify-center transition-colors hover:bg-[#9ac1e9] cursor-pointer"
+                          className="w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors hover:bg-[#9ac1e9] cursor-pointer"
                         >
-                          <img src="/src/assets/image/Twitter.png" alt="Twitter" className="w-12 h-12" />
+                          <img src="/src/assets/image/Twitter.png" alt="Twitter" className="w-8 h-8 sm:w-12 sm:h-12" />
                         </button>
                       </div>
                     </div>
@@ -249,8 +284,8 @@ export default function ViewPost() {
                 </div>
 
                 {/* Comment Section */}
-                <div className="pt-8">
-                  <h3 className="text-xl font-semibold text-[#75716B] mb-4">Comment</h3>
+                <div className="pt-6 sm:pt-8">
+                  <h3 className="text-lg sm:text-xl font-semibold text-[#75716B] mb-4">Comment</h3>
                   
                   <form onSubmit={handleCommentSubmit}>
                     <textarea
@@ -263,7 +298,7 @@ export default function ViewPost() {
                     <div className="flex justify-end mt-4">
                       <button
                         type="submit"
-                        className="px-10 py-2 bg-[#26231E] text-white rounded-full hover:bg-gray-800 transition-colors cursor-pointer"
+                        className="px-6 sm:px-10 py-2 bg-[#26231E] text-white rounded-full hover:bg-gray-800 transition-colors cursor-pointer"
                       >
                         Send
                       </button>
@@ -287,10 +322,10 @@ export default function ViewPost() {
                 </div>
             </div>
 
-            {/* Author Box - Right Side (Fixed Position) */}
-            <div className="w-75 flex-shrink-0">
+            {/* Author Box - Desktop Only (Fixed Position) */}
+            <div className="hidden lg:block w-75 flex-shrink-0">
               {/* Author Box ที่ใช้เป็น reference สำหรับคำนวณตำแหน่ง */}
-              <div data-author-box className="bg-[#EFEEEB] rounded-xl p-6 opacity-0 pointer-events-none">
+              <div data-author-box className="bg-[#EFEEEB] rounded-xl opacity-0 pointer-events-none">
                 <div className="flex items-center mb-4">
                   <img 
                     src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
@@ -313,10 +348,10 @@ export default function ViewPost() {
                 </div>
               </div>
               
-              {/* Author Box ที่แสดงจริง (fixed position) */}
+              {/* Author Box ที่แสดงจริง (fixed position เฉพาะ desktop) */}
               <div 
-                className="bg-[#EFEEEB] rounded-xl p-6"
-                style={authorBoxStyle}
+                className="bg-[#EFEEEB] rounded-xl p-6 lg:absolute lg:top-0 lg:left-0"
+                style={Object.keys(authorBoxStyle).length > 0 ? authorBoxStyle : {}}
               >
                 <div className="flex items-center mb-4">
                   <img 

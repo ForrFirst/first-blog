@@ -104,10 +104,10 @@ export default function ArticleSection() {
   };
 
   return (
-    <section className="py-12 px-4">
+    <section className="py-12 px-4 sm:px-8">
       <div className="max-w-screen-xl mx-auto">
         {/* Header */}
-        <h2 className="text-3xl font-bold text-[#26231E] text-left mb-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#26231E] text-left mb-8">
           Latest articles
         </h2>
 

@@ -5,8 +5,8 @@ export default function Footer() {
   const navigate = useNavigate();
 
   return (
-    <footer className="bg-[#EFEEEB] py-15 rounded-none">
-      <div className="container mx-auto px-30 flex items-center justify-between">
+    <footer className="bg-[#EFEEEB] py-8 px-4 sm:py-15 sm:px-30 rounded-none">
+      <div className="flex flex-col items-center space-y-6 sm:container sm:mx-auto sm:px-0 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         
         <div className="flex items-center gap-4">
           <span className="text-gray-800 font-medium">Get in touch</span>
@@ -23,7 +23,7 @@ export default function Footer() {
 
         <button 
           onClick={() => navigate('/')}
-          className="text-[#26231E] font-semibold underline hover:text-gray-600 cursor-pointer"
+          className="text-gray-800 font-medium underline hover:text-gray-600 cursor-pointer sm:text-[#26231E] sm:font-semibold"
         >
           Home page
         </button>
