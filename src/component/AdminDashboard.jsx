@@ -1,7 +1,9 @@
 import { useAuth } from '../context/authentication.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminDashboard() {
   const { state, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#F9F8F6] py-8 px-4">
@@ -31,13 +33,19 @@ export default function AdminDashboard() {
             <div className="bg-[#EFEEEB] rounded-lg p-6">
               <h2 className="text-xl font-semibold text-[#26231E] mb-4">Admin Actions</h2>
               <div className="space-y-3">
+                <button 
+                  onClick={() => navigate('/admin/create-post')}
+                  className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  Create New Post
+                </button>
                 <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                   Manage Users
                 </button>
-                <button className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
                   Manage Posts
                 </button>
-                <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                <button className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
                   System Settings
                 </button>
               </div>

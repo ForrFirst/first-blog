@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import { validatePostData } from '../middleware/postValidation.mjs';
+
 const router = express.Router();
-const { validatePostData } = require('../postvalidation');
 
 router.post('/assignments', (req, res) => {
   try {
@@ -154,4 +155,4 @@ router.delete('/:postId', (req, res) => {
   }
 });
 
-module.exports = router; 
+export default router; 

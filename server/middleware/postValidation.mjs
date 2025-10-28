@@ -47,6 +47,6 @@ const validatePostData = (data) => {
   return errors;
 };
 
-module.exports = {
+export {
   validatePostData
 };

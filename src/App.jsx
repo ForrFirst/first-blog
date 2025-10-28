@@ -13,6 +13,7 @@ import RegistrationSuccess from './component/RegistrationSuccess';
 import AuthenticationRoute from './component/AuthenticationRoute';
 import ProtectedRoute from './component/ProtectedRoute';
 import AdminDashboard from './component/AdminDashboard';
+import CreatePostComponent from './component/CreatePostComponent';
 import NotFoundPage from './component/NotFoundPage';
 import { Toaster } from 'sonner';
 
@@ -73,6 +74,19 @@ function AppContent() {
                 requiredRole="admin"
               >
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/create-post"
+            element={
+              <ProtectedRoute
+                isLoading={state.getUserLoading}
+                isAuthenticated={isAuthenticated}
+                userRole={state.user?.role}
+                requiredRole="admin"
+              >
+                <CreatePostComponent />
               </ProtectedRoute>
             }
           />
