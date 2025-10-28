@@ -18,7 +18,7 @@ export default function ViewPost() {
   const [isLiked, setIsLiked] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
-
+  const [authorBoxStyle, setAuthorBoxStyle] = useState({});
 
   const isLoggedIn = false;
 
@@ -49,6 +49,46 @@ export default function ViewPost() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [postId]);
+
+  // คำนวณตำแหน่ง Author Box และติดตามการเลื่อนจอ
+  useEffect(() => {
+    const updateAuthorBoxPosition = () => {
+      const authorBoxElement = document.querySelector('[data-author-box]');
+      if (authorBoxElement) {
+        const rect = authorBoxElement.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // คำนวณตำแหน่ง fixed ที่จะทำให้ Author Box อยู่ที่ตำแหน่งเดิม
+        const fixedTop = rect.top + scrollTop;
+        const fixedLeft = rect.left;
+        
+        setAuthorBoxStyle({
+          position: 'fixed',
+          top: `${Math.max(100, fixedTop - scrollTop)}px`, 
+          left: `${fixedLeft}px`,
+          width: `${rect.width}px`,
+          zIndex: 10
+        });
+      }
+    };
+
+
+    const timer = setTimeout(updateAuthorBoxPosition, 100);
+
+
+    const handleScroll = () => {
+      updateAuthorBoxPosition();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', updateAuthorBoxPosition);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateAuthorBoxPosition);
+    };
+  }, [post]);
 
   const handleLike = () => {
     if (!isLoggedIn) {
@@ -247,32 +287,58 @@ export default function ViewPost() {
                 </div>
             </div>
 
-            {/* Author Box - Right Side (Fixed) */}
-            <div className="w-75 flex-shrink-0 sticky top-20 z-10">
-              
-                <div className="bg-[#EFEEEB] rounded-xl p-6">
-                  <div className="flex items-center mb-4">
-                    <img 
-                      src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
-                      alt={post.author}
-                      className="w-12 h-12 rounded-full mr-4"
-                    />
-                    <div>
-                      <div className="text-sm text-gray-500">Author</div>
-                      <div className="font-semibold text-gray-900 ">{post.author}</div>
-                    </div>             
-                  </div>
-                  <div className="border border-[#DAD6D1] mb-4"></div>
-                  <div className="text-[#75716B] text-base font-medium leading-relaxed">
-                    <p className="mb-3">
-                      I am a pet enthusiast and freelance writer who specializes in animal behavior and care. With a deep love for cats, I enjoy sharing insights on feline companionship and wellness.
-                    </p>
-                    <p>
-                      When I’m not writing, I spend time volunteering at my local animal shelter, helping cats find loving homes.
-                    </p>
-                  </div>
+            {/* Author Box - Right Side (Fixed Position) */}
+            <div className="w-75 flex-shrink-0">
+              {/* Author Box ที่ใช้เป็น reference สำหรับคำนวณตำแหน่ง */}
+              <div data-author-box className="bg-[#EFEEEB] rounded-xl p-6 opacity-0 pointer-events-none">
+                <div className="flex items-center mb-4">
+                  <img 
+                    src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
+                    alt={post.author}
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <div className="text-sm text-gray-500">Author</div>
+                    <div className="font-semibold text-gray-900 ">{post.author}</div>
+                  </div>             
                 </div>
+                <div className="border border-[#DAD6D1] mb-4"></div>
+                <div className="text-[#75716B] text-base font-medium leading-relaxed">
+                  <p className="mb-3">
+                    I am a pet enthusiast and freelance writer who specializes in animal behavior and care. With a deep love for cats, I enjoy sharing insights on feline companionship and wellness.
+                  </p>
+                  <p>
+                    When I'm not writing, I spend time volunteering at my local animal shelter, helping cats find loving homes.
+                  </p>
+                </div>
+              </div>
               
+              {/* Author Box ที่แสดงจริง (fixed position) */}
+              <div 
+                className="bg-[#EFEEEB] rounded-xl p-6"
+                style={authorBoxStyle}
+              >
+                <div className="flex items-center mb-4">
+                  <img 
+                    src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
+                    alt={post.author}
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <div className="text-sm text-gray-500">Author</div>
+                    <div className="font-semibold text-gray-900 ">{post.author}</div>
+                  </div>             
+                </div>
+                <div className="border border-[#DAD6D1] mb-4"></div>
+                <div className="text-[#75716B] text-base font-medium leading-relaxed">
+                  <p className="mb-3">
+                    I am a pet enthusiast and freelance writer who specializes in animal behavior and care. With a deep love for cats, I enjoy sharing insights on feline companionship and wellness.
+                  </p>
+                  <p>
+                    When I'm not writing, I spend time volunteering at my local animal shelter, helping cats find loving homes.
+                  </p>
+                </div>
+              </div>
             </div>
 
           </div>
